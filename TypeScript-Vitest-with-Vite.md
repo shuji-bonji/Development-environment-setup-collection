@@ -12,7 +12,7 @@ cd ts-vite-vitest
 
 ### 2. **Vitestをインストール**
 ```bash
-npm install -D vitest @vitest/ui c8
+npm install -D vitest @vitest/ui @vitest/coverage-v8 jsdom 
 ```
 
 ### 3. **vite.config.tsの作成/編集**
@@ -35,7 +35,7 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     coverage: {
-      provider: 'c8',
+      provider: 'v8',
       reporter: ['text', 'json', 'html'],
     },
   }
@@ -53,25 +53,29 @@ export default defineConfig({
     "module": "ESNext",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
-    
+
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "moduleDetection": "force",
     "noEmit": true,
-    
+
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    
+    "noUncheckedSideEffectImports": true,
+
     /* Testing */
     "types": ["vitest/globals"]
   },
+  // "include": ["src"]
   "include": ["src/**/*.ts", "tests/**/*.ts"],
 }
+
 ```
 
 
@@ -94,14 +98,15 @@ export default defineConfig({
     "test:coverage": "vitest run --coverage"
   },
   "devDependencies": {
-    "@vitest/ui": "^0.34.6",
-    "c8": "^8.0.1",
-    "jsdom": "^22.1.0",
-    "typescript": "^5.0.2",
-    "vite": "^4.4.5",
-    "vitest": "^0.34.6"
+    "@vitest/coverage-v8": "^3.1.1",
+    "@vitest/ui": "^3.1.1",
+    "jsdom": "^26.0.0",
+    "typescript": "~5.7.2",
+    "vite": "^6.2.0",
+    "vitest": "^3.1.1"
   }
 }
+
 ```
 
 
@@ -113,7 +118,7 @@ mkdir -p src/utils tests
 ### 7. **サンプルのユーティリティクラスを作成**
 
 #### src/tuils/calculator.ts
-```json
+```ts
 /**
  * 簡単な計算機能を提供するユーティリティ
  */
